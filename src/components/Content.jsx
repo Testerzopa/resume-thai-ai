@@ -1,4 +1,7 @@
 import { useState } from "react"
+import { useRef } from "react" 
+import html2canvas from "html2canvas"
+import jsPDF from "jspdf"
 import "./components-style/Contents.css"
 function Content(){
     const [photo , setPhoto] = useState(null)
@@ -9,6 +12,23 @@ function Content(){
     const [location , setLocation] = useState("")
 
     const [skills , setSkills] = useState("")
+
+    const resumeRef = useRef()
+
+    const handleResumeref = async(e) => {
+        e.preventDefault()
+        const element = resumeRef.current //เชื่อมไปหา ref ที่ต้องการ
+        const canvas = await html2canvas(element) //แปลง html to canvas
+        const data = canvas.toDataURL('image/png') //canvas to img
+        const pdf = new jsPDF();
+
+        const pdfWidth = pdf.internal.pageSize.getWidth()
+        const imgProps = pdf.getImageProperties(data)
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+        pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight)
+        pdf.save('resume.pdf')
+    }
+
     return(
         <section className="content-layout">
             
@@ -18,6 +38,7 @@ function Content(){
                     
                     <p>เลือกรูปโปรไฟล์ของคุณ</p>
                     <input
+                    id="upload-photo"
                     className="btn-photo"
                     type="file"
                     accept=".png,.jpg,.jpeg"
@@ -28,6 +49,10 @@ function Content(){
                         }
                     }}
                     />
+
+                    <label htmlFor="upload-photo"
+                    className="custom-file-upload">📁อัปโหลดรูปภาพ
+                    </label>
 
                     <input type="text"
                     placeholder="Fullname"
@@ -62,11 +87,12 @@ function Content(){
                     onChange={(e)=>setSkills(e.target.value)}
                     />
                     
+                    <button type="button" className="btn-pdf" onClick={handleResumeref}>Download PDF</button>
 
                 </form>
             </div>
             <div className="preview">
-                <div className="preview-container">
+                <div className="preview-container" ref={resumeRef}>
                     {photo && <img src={photo} alt="profile" />}
                     <h1>{fullName || "Your name"}</h1>
                     <p>{email || "email@gmail.com"}</p>
@@ -77,6 +103,8 @@ function Content(){
 
                     <h2>Skills</h2>
                     <p>{skills || "skill"}</p>
+
+                        
                 </div>
             </div>
         </section>
