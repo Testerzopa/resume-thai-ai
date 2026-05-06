@@ -75,6 +75,9 @@
     padding: 20mm;      /* เผื่อระยะขอบ */
     box-sizing: border-box; /* สำคัญมาก! กัน Padding ดันขนาด */
     overflow: hidden;   /* ป้องกันเนื้อหาไหลซ้อนกัน */
+    white-space: normal;       /* บังคับให้ขึ้นบรรทัดใหม่ตามปกติ */
+    word-break: break-word;    /* ตัดคำที่ยาวเกินไปให้ลงมาบรรทัดใหม่ (เช่น ลิงก์ หรือ อีเมลยาวๆ) */
+    overflow-wrap: break-word;
 }
 
 .preview-container img {
@@ -100,6 +103,24 @@
     text-transform: uppercase;
 }
 
+.btn-addLocation{
+    background-color: #2f3542;
+    border: none;
+    border-radius: 10px;
+    width: 50%;
+    height: 50px;
+    cursor: pointer;
+}
+
+.btn-add-more{
+    background-color: #2f3542;
+    border: none;
+    border-radius: 10px;
+    width: 50%;
+    height: 50px;
+    cursor: pointer;
+}
+
 .btn-pdf {
     background-color: #ff4757; /* สีแดงที่ดูทันสมัยขึ้น */
     color: white;
@@ -117,3 +138,4 @@
     background-color: #ff6b81;
     transform: translateY(-2px);
 }
+
